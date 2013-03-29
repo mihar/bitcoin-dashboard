@@ -1,3 +1,4 @@
+.DS_Store
 *.gem
 *.rbc
 .bundle
@@ -12,7 +13,10 @@ test/tmp
 test/version_tmp
 tmp
 
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
+public/js/*
+!public/js/_lib
+public/assets
+public/css
+public/*.html
+*.sassc
+.sass-cache

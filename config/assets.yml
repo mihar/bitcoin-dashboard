@@ -1,0 +1,17 @@
+compress_assets: off
+
+stylesheets:
+  app:
+    - public/css/application.css
+javascripts:
+  common:
+    - public/js/_lib/inheritance.js
+  app:
+    - public/js/ns.js
+    - public/js/models/**/*.js
+    - public/js/views/**/*.js
+    - public/js/Router.js
+    - public/js/Events.js
+    - public/js/App.js
+    - public/js/log.js
+    - public/js/init.js

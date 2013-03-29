@@ -1,0 +1,4 @@
+##
+## NAMESPACE
+class window.BTCD
+
