@@ -22,6 +22,9 @@ class BTCD.App
     # Setup balance object.
     BTCD.balance = new BTCD.Balance
 
+    # Setup views.
+    BTCD.balance_view = new BTCD.BalanceView
+
   dom_onload: ->
     BTCD.log 'DOM loaded, proceeding'
     BTCD.app.dom_exists = true
@@ -30,5 +33,8 @@ class BTCD.App
 
     # Setup router.
     @router = new BTCD.Router
+
+    # Apply views.
+    $('#main').append BTCD.balance_view.render().el
 
     @events.t 'init:dom:end'
