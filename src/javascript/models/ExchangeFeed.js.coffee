@@ -65,8 +65,8 @@ BTCD.ExchangeFeeds.MtGox = BTCD.ExchangeFeedSocket.extend
 
 # Coinbase
 BTCD.ExchangeFeeds.Coinbase = BTCD.ExchangeFeedPoll.extend
-  poll_url: 'http://coinbase.com/api/v1/prices/sell'
-  process_data: (data) -> @update null, parseFloat(data.amount)
+  poll_url: 'http://coincors.herokuapp.com/coinbase'
+  process_data: (data) -> @update data.buy, data.sell
 
 # Bitstamp
 BTCD.ExchangeFeeds.Bitstamp = BTCD.ExchangeFeedPoll.extend
