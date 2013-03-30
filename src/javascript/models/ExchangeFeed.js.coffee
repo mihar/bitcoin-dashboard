@@ -1,8 +1,17 @@
 BTCD.ExchangeFeed = Backbone.Model.extend 
+  max_history: 750
   sell_values: []
   buy_values: []
 
   update_value: (kind, value) ->
+    values = this["#{kind}_values"] # Values array shortcut.
+
+    # Purge values.
+    values.shift() if values.length > @max_history
+    # Last value.
+    values.push value
+
+    # Figure out the trend.
     if @has kind
       if @get(kind) > value
         @set "#{kind}_trend", -1
@@ -11,7 +20,7 @@ BTCD.ExchangeFeed = Backbone.Model.extend
     else
       @set "#{kind}_trend", 0
 
-    this["#{kind}_values"].push value
+    # Finally set value.
     @set kind, value
 
   update: (buy_value, sell_value) ->
