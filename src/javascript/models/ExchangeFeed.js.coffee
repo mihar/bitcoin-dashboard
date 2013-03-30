@@ -67,4 +67,11 @@ BTCD.ExchangeFeeds.Coinbase = BTCD.ExchangeFeedPoll.extend
 # Bitstamp
 BTCD.ExchangeFeeds.Bitstamp = BTCD.ExchangeFeedPoll.extend
   poll_url: 'https://www.bitstamp.net/api/ticker/'
-  process_data: (data) -> @update parseFloat(data.bid), parseFloat(data.ask)
+  process_data: (data) -> @update parseFloat(data.ask), parseFloat(data.bid)
+
+# BTC-E
+BTCD.ExchangeFeeds.BTCE = BTCD.ExchangeFeedPoll.extend
+  poll_url: 'https://btc-e.com/api/1/ticker'
+  process_data: (data) -> 
+    if data and data.ticker
+      @update data.ticker.buy, data.ticker.sell
