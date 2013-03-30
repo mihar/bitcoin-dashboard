@@ -19,6 +19,9 @@ class BTCD.App
       @events.t 'init:end'
     , this
 
+    # Setup balance object.
+    BTCD.balance = new BTCD.Balance
+
   dom_onload: ->
     BTCD.log 'DOM loaded, proceeding'
     BTCD.app.dom_exists = true
