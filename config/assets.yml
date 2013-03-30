@@ -5,7 +5,6 @@ stylesheets:
     - public/css/application.css
 javascripts:
   common:
-    - public/js/_lib/inheritance.js
   app:
     - public/js/ns.js
     - public/js/models/**/*.js
