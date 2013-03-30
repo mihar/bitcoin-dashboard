@@ -11,7 +11,7 @@ javascripts:
     - public/js/views/**/*.js
     - public/js/Router.js
     - public/js/Events.js
-    - public/js/Balance.js
+    - public/js/Dashboard.js
     - public/js/App.js
     - public/js/log.js
     - public/js/init.js
