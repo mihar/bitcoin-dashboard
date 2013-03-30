@@ -1,28 +1,40 @@
-class BTCD.MasterView extends Backbone.View
-  id: 'master'
-
-  initialize: ->
-    @balance_el = $ '<div class="balance">Balance: <strong>0</strong></div>'
-    @net_worth_el = $ '<div class="net_worth">Net worth: <strong>0</strong></div>'
-
+class BTCD.MasterView
+  constructor: ->
     BTCD.app.events.on 'balance:change', @update_balance, this
     BTCD.app.events.on 'net_worth:change', @update_net_worth, this
-    BTCD.app.events.on 'trend:change', @highlight_trend, this
+    BTCD.app.events.on 'net_worth_diff:change', @update_net_worth, this
+    BTCD.app.events.on 'trend:change', @visualize_trend, this
+
+    @balance_el = $ '#balance'
+    @net_worth_el = $ '#net_worth'
+    @diff_el = $ '#diff'
+
+    @init()
+
+  init: -> @update_balance BTCD.dashboard.balance
 
   update_balance: (data) -> @balance_el.find('strong').text data
-  update_net_worth: (data) -> 
-    net_worth = "$#{data.toFixed(2)}"
-    document.title = "[#{net_worth}] BTC Dashboard"
-    @net_worth_el.find('strong').text net_worth
+  update_page_title: (diff, net_worth) -> document.title = "#{@glyph_diff(diff)} #{diff} [#{net_worth}]"
+  update_net_worth: -> 
+    net_worth = "$#{BTCD.dashboard.net_worth.toFixed(2)}"
+    diff = BTCD.dashboard.net_worth_diff.toFixed(2)
+      
+    # Update page title.
+    @update_page_title diff, net_worth
 
-  highlight_trend: (trend) ->
+    # Update DOM.
+    @net_worth_el.find('strong').text net_worth
+    @diff_el.find('.amount').text diff
+    @diff_el.find('.direction').html @entity_diff(diff)
+
+  visualize_diff: (diff) ->
+    return ["▲", "&uarr;"] if diff > 0
+    ["▼", "&darr;"]
+  glyph_diff: (diff) -> @visualize_diff(diff)[0]
+  entity_diff: (diff) -> @visualize_diff(diff)[1]
+
+  visualize_trend: (trend) ->
     if trend is 1
       $('body').removeClass('down').addClass('up')
     else if trend is -1
       $('body').removeClass('up').addClass('down')
-
-  render: ->
-    @$el.append @balance_el
-    @$el.append @net_worth_el
-
-    this

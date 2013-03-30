@@ -1,9 +1,8 @@
 BTCD.ExchangeFeed = Backbone.Model.extend 
   max_history: 750
-  sell_values: []
-  buy_values: []
 
   update_value: (kind, value) ->
+    this["#{kind}_values"] ||= [] 
     values = this["#{kind}_values"] # Values array shortcut.
 
     # Purge values.
@@ -26,6 +25,8 @@ BTCD.ExchangeFeed = Backbone.Model.extend
   update: (buy_value, sell_value) ->
     @update_value 'buy', buy_value if buy_value
     @update_value 'sell', sell_value if sell_value
+
+    BTCD.app.events.t 'heartbeat'
 
 BTCD.ExchangeFeedSocket = BTCD.ExchangeFeed.extend
   initialize: -> 
@@ -56,7 +57,7 @@ BTCD.ExchangeFeeds = {}
 
 # MtGox
 BTCD.ExchangeFeeds.MtGox = BTCD.ExchangeFeedSocket.extend
-  socket_url: 'https://socketio.mtgox.com/mtgox'
+  socket_url: 'http://socketio-old.mtgox.com/mtgox'
 
   process_message: (data) ->
     if data and data.ticker
@@ -64,7 +65,7 @@ BTCD.ExchangeFeeds.MtGox = BTCD.ExchangeFeedSocket.extend
 
 # Coinbase
 BTCD.ExchangeFeeds.Coinbase = BTCD.ExchangeFeedPoll.extend
-  poll_url: 'https://coinbase.com/api/v1/prices/sell'
+  poll_url: 'http://coinbase.com/api/v1/prices/sell'
   process_data: (data) -> @update null, parseFloat(data.amount)
 
 # Bitstamp

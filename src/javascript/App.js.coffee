@@ -23,8 +23,8 @@ class BTCD.App
     BTCD.dashboard = new BTCD.Dashboard
 
     # Setup views.
-    BTCD.master_view = new BTCD.MasterView
     BTCD.exchanges_view = new BTCD.ExchangesView
+    BTCD.heartbeat_view = new BTCD.HeartbeatView
 
   dom_onload: ->
     BTCD.log 'DOM loaded, proceeding'
@@ -35,8 +35,11 @@ class BTCD.App
     # Setup router.
     @router = new BTCD.Router
 
+    # Initialize master view.
+    BTCD.master_view = new BTCD.MasterView
+
     # Apply views.
-    $('#main').append BTCD.exchanges_view.el
-    $('#main').append BTCD.master_view.render().el
+    $('#header').append BTCD.exchanges_view.el
+    $('#header').append BTCD.heartbeat_view.render().el
 
     @events.t 'init:dom:end'

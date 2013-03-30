@@ -15,11 +15,15 @@ BTCD.Exchange = Backbone.Model.extend
     
     # Initialize basic values.
     @set 'net_worth', 0
+    @set 'net_worth_diff', 0
     @set 'balance', balance
 
   recalculate_net_worth: -> 
     if @has('balance') and @feed.has('sell')
       @set 'net_worth', @get('balance') * @feed.get('sell')
+
+      if @previous('net_worth') isnt 0
+        @set 'net_worth_diff', @get('net_worth') - @previous('net_worth')
 
 
 BTCD.Exchanges = {}

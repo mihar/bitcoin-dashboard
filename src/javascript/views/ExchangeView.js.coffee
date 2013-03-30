@@ -1,5 +1,6 @@
 class BTCD.ExchangesView extends Backbone.View
   id: 'exchanges'
+  tagName: 'aside'
 
   initialize: ->
     BTCD.app.events.on 'exchange:register', @append, this

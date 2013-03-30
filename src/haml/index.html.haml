@@ -11,7 +11,18 @@
     %script{:type => "text/javascript", :src => "assets/app.js"}
     %link{:href => 'assets/app.css', :rel => 'stylesheet'}
   %body
+    %header#header
     #main
+      #master
+        #balance
+          %span Balance:
+          %strong 0
+        #net_worth
+          %span Net worth:
+          %strong $0.00
+          %span#diff
+            %span.direction
+            %span.amount 0.00
     :javascript
       window.mg = new BTCD.Exchanges.MtGox(36.55228280);
       window.cb = new BTCD.Exchanges.Coinbase(61.54090908);
