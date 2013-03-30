@@ -19,8 +19,8 @@ class BTCD.App
       @events.t 'init:end'
     , this
 
-    # Setup balance object.
-    BTCD.balance = new BTCD.Dashboard
+    # Setup dashboard object.
+    BTCD.dashboard = new BTCD.Dashboard
 
     # Setup views.
     BTCD.master_view = new BTCD.MasterView

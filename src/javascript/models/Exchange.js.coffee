@@ -11,7 +11,7 @@ BTCD.Exchange = Backbone.Model.extend
     @on 'change:balance', @recalculate_net_worth, this
 
     # Register exchange.
-    BTCD.balance.register this
+    BTCD.dashboard.register this
     
     # Initialize basic values.
     @set 'net_worth', 0
