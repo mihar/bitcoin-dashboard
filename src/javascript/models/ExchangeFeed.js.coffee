@@ -1,23 +1,17 @@
 BTCD.ExchangeFeed = Backbone.Model.extend 
-  sell_trend: 0
   sell_values: []
-  buy_trend: 0
   buy_values: []
 
   update_value: (kind, value) ->
-    values = this["#{kind}_values"]
+    if @has kind
+      if @get(kind) > value
+        @set "#{kind}_trend", -1
+      else if @get(kind) < value
+        @set "#{kind}_trend", 1
+    else
+      @set "#{kind}_trend", 0
 
-    if values.length > 0
-      previous_value = values[values.length-1]
-
-      this["#{kind}_trend"] = if previous_value > value
-        -1
-      else if previous_value < value
-        1
-      else
-        0
-
-    values.push value
+    this["#{kind}_values"].push value
     @set kind, value
 
   update: (buy_value, sell_value) ->

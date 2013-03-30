@@ -3,9 +3,6 @@ BTCD.Exchange = Backbone.Model.extend
     unless @name
       throw new Error('Missing name parameter.')
 
-    # Register exchange.
-    BTCD.balance.register this
-
     # Setup feed.
     @feed = new BTCD.ExchangeFeeds[@name]
 
@@ -13,11 +10,17 @@ BTCD.Exchange = Backbone.Model.extend
     @feed.on 'change:sell', @recalculate_net_worth, this
     @on 'change:balance', @recalculate_net_worth, this
 
+    # Register exchange.
+    BTCD.balance.register this
+    
     # Initialize basic values.
     @set 'net_worth', 0
     @set 'balance', balance
 
-  recalculate_net_worth: (model, sell) -> @set 'net_worth', @get('balance') * sell
+  recalculate_net_worth: -> 
+    if @has('balance') and @feed.has('sell')
+      @set 'net_worth', @get('balance') * @feed.get('sell')
+
 
 BTCD.Exchanges = {}
 
