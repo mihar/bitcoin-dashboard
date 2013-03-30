@@ -4,7 +4,7 @@ BTCD.ExchangeFeed = Backbone.Model.extend
   buy_trend: 0
   buy_values: []
 
-  update_trend: (kind, value) ->
+  update_value: (kind, value) ->
     values = this["#{kind}_values"]
 
     if values.length > 0
