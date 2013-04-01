@@ -57,7 +57,7 @@ BTCD.ExchangeFeeds = {}
 
 # MtGox
 BTCD.ExchangeFeeds.MtGox = BTCD.ExchangeFeedSocket.extend
-  socket_url: 'http://socketio-old.mtgox.com/mtgox'
+  socket_url: 'https://socketio.mtgox.com/mtgox'
 
   process_message: (data) ->
     if data and data.ticker
