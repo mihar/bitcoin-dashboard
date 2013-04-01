@@ -39,7 +39,10 @@ class BTCD.Dashboard
   recalculate_diff: ->
     if @previous_net_worth and @net_worth and @previous_net_worth > 0 and @net_worth > 0
       diff = @net_worth - @previous_net_worth
-      return if diff is @net_worth_diff
+
+      # Skip triggering an event or setting the variable if it hasn't changed or is 0.
+      return if diff is @net_worth_diff 
+      return if parseInt(diff) is 0
       
       @net_worth_diff = diff
       BTCD.app.events.t 'net_worth_diff:change', @net_worth_diff
