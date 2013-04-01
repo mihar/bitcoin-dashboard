@@ -3,7 +3,7 @@ class BTCD.MasterView
     BTCD.app.events.on 'balance:change', @update_balance, this
     BTCD.app.events.on 'net_worth:change', @update_net_worth, this
     BTCD.app.events.on 'net_worth_diff:change', @update_net_worth, this
-    BTCD.app.events.on 'trend:change', @visualize_trend, this
+    BTCD.app.events.on 'net_worth_diff:change', @mark_diff, this
 
     @balance_el = $ '#balance'
     @net_worth_el = $ '#net_worth'
@@ -33,8 +33,10 @@ class BTCD.MasterView
   glyph_diff: (diff) -> @visualize_diff(diff)[0]
   entity_diff: (diff) -> @visualize_diff(diff)[1]
 
-  visualize_trend: (trend) ->
-    if trend is 1
+  mark_diff: ->
+    diff = BTCD.dashboard.net_worth_diff.toFixed(2)
+
+    if diff > 0
       $('body').removeClass('down').addClass('up')
-    else if trend is -1
+    else
       $('body').removeClass('up').addClass('down')
