@@ -39,3 +39,7 @@ BTCD.Exchanges.Coinbase = BTCD.Exchange.extend
 # Bitstamp
 BTCD.Exchanges.Bitstamp = BTCD.Exchange.extend
   name: 'Bitstamp'
+
+# BTC-E
+BTCD.Exchanges.BTCE = BTCD.Exchange.extend
+  name: 'BTCE'
