@@ -11,6 +11,7 @@ javascripts:
     - public/js/views/**/*.js
     - public/js/Router.js
     - public/js/Events.js
+    - public/js/Persistence.js
     - public/js/Dashboard.js
     - public/js/App.js
     - public/js/log.js
