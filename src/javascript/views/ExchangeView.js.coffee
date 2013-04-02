@@ -19,8 +19,12 @@ class BTCD.ExchangeView extends Backbone.View
     @model.on 'change:net_worth', @update_net_worth, this
     @model.on 'change:balance', @update_balance, this
 
-  update_balance: (exchange, data) -> @balance_el.find('strong').text data
-  update_net_worth: (exchange, data) -> @net_worth_el.find('strong').text "$#{data.toFixed(2)}"
+    # Initialize data.
+    @update_balance()
+    @update_net_worth()
+
+  update_balance: -> @balance_el.find('strong').text @model.get 'balance'
+  update_net_worth: -> @net_worth_el.find('strong').text "$#{@model.get('net_worth').toFixed(2)}"
     
   render: ->
     @$el.append $('<h2>').text(@model.name)

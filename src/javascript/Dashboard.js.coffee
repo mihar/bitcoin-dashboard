@@ -12,13 +12,19 @@ BTCD.Dashboard = BTCD.AbstractExchange.extend
       BTCD.warn "Exchange #{exchange.name} already registered. Skipping."
       return 
 
-    BTCD.app.events.t 'exchange:register', exchange
-    BTCD.info "Registering exchange #{exchange.name}", exchange
+    # Register exchange in our array and trigger events.
     @exchanges.push exchange
-
+    
     # Setup events.
     exchange.on 'change:balance', @sum_balance, this
     exchange.on 'change:net_worth', @sum_net_worth, this
+
+    # Initialize data.
+    @sum_balance()
+    @sum_net_worth()
+
+    BTCD.app.events.t 'exchange:register', exchange
+    BTCD.info "Registering exchange #{exchange.name}", exchange
 
   sum_balance: -> @sum 'balance'
   sum_net_worth: -> @sum 'net_worth'

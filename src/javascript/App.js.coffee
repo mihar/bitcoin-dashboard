@@ -1,7 +1,7 @@
 class BTCD.App
   codename: 'BTCDv0.1'
   # Debugging.
-  debug: 6
+  debug: 0
   debug_mode: false
 
   events: _.extend(BTCD.Events, Backbone.Events)
@@ -26,6 +26,7 @@ class BTCD.App
     BTCD.dashboard = new BTCD.Dashboard
 
     # Setup views.
+    BTCD.dashboard_view = new BTCD.DashboardView
     BTCD.exchanges_view = new BTCD.ExchangesView
     BTCD.heartbeat_view = new BTCD.HeartbeatView
 
@@ -39,7 +40,7 @@ class BTCD.App
     @router = new BTCD.Router
 
     # Initialize dashboard view.
-    BTCD.dashboard_view = new BTCD.DashboardView
+    BTCD.dashboard_view.init()
 
     # Apply views.
     $('#header').append BTCD.exchanges_view.el

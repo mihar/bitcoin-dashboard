@@ -6,16 +6,16 @@ class BTCD.DashboardView
     @model.on 'change:net_worth_diff', @update_net_worth, this
     @model.on 'change:net_worth_diff', @mark_diff, this
 
+    BTCD.app.events.on 'exchange:register', @update_balance, this
+
+  init: ->
     @balance_el = $ '#balance'
     @net_worth_el = $ '#net_worth'
     @diff_el = $ '#diff'
 
-    @init()
-
-  init: -> @update_balance @model, @model.get 'balance'
-
-  update_balance: (model, balance) -> @balance_el.find('strong').text balance
   update_page_title: (diff, net_worth) -> document.title = "#{@glyph_diff(diff)} #{diff} [#{net_worth}]"
+  
+  update_balance: -> @balance_el.find('strong').text @model.get('balance')
   update_net_worth: -> 
     net_worth = "$#{@model.get('net_worth').toFixed(2)}"
     diff = @model.get('net_worth_diff').toFixed(2)

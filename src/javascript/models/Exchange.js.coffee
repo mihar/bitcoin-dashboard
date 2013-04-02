@@ -41,23 +41,25 @@ BTCD.Exchange = BTCD.AbstractExchange.extend
     unless @name
       throw new Error('Missing name parameter.')
 
+    BTCD.info "Creating #{@name} exchange with #{balance} BTC balance."
+    BTCD.app.events.t 'exchange:create', this
+
     # Setup feed.
     @feed = new BTCD.ExchangeFeeds[@name]
 
     # Recalculate net worth on changes of balance or market price.
     @on 'change:balance', @calculate_net_worth, this
     @feed.on 'change:sell', @calculate_net_worth, this
-
-    # Register exchange.
-    BTCD.dashboard.register this
     
     # Call the super's initializer.
     BTCD.Exchange.__super__.initialize.apply this, arguments
 
+    # Register exchange.
+    BTCD.dashboard.register this
+
   calculate_net_worth: -> 
     if @has('balance') and @feed.has('sell')
       @update 'net_worth', @get('balance') * @feed.get('sell')
-
 
 
 ##
