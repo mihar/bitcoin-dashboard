@@ -35,8 +35,8 @@ class BTCD.App
     # Setup router.
     @router = new BTCD.Router
 
-    # Initialize master view.
-    BTCD.master_view = new BTCD.MasterView
+    # Initialize dashboard view.
+    BTCD.dashboard_view = new BTCD.DashboardView
 
     # Apply views.
     $('#header').append BTCD.exchanges_view.el

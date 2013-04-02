@@ -1,9 +1,10 @@
-class BTCD.MasterView
+class BTCD.DashboardView
   constructor: ->
-    BTCD.app.events.on 'balance:change', @update_balance, this
-    BTCD.app.events.on 'net_worth:change', @update_net_worth, this
-    BTCD.app.events.on 'net_worth_diff:change', @update_net_worth, this
-    BTCD.app.events.on 'net_worth_diff:change', @mark_diff, this
+    @model = BTCD.dashboard
+    @model.on 'change:balance', @update_balance, this
+    @model.on 'change:net_worth', @update_net_worth, this
+    @model.on 'change:net_worth_diff', @update_net_worth, this
+    @model.on 'change:net_worth_diff', @mark_diff, this
 
     @balance_el = $ '#balance'
     @net_worth_el = $ '#net_worth'
@@ -11,13 +12,13 @@ class BTCD.MasterView
 
     @init()
 
-  init: -> @update_balance BTCD.dashboard.balance
+  init: -> @update_balance @model, @model.get 'balance'
 
-  update_balance: (data) -> @balance_el.find('strong').text data
+  update_balance: (model, balance) -> @balance_el.find('strong').text balance
   update_page_title: (diff, net_worth) -> document.title = "#{@glyph_diff(diff)} #{diff} [#{net_worth}]"
   update_net_worth: -> 
-    net_worth = "$#{BTCD.dashboard.net_worth.toFixed(2)}"
-    diff = BTCD.dashboard.net_worth_diff.toFixed(2)
+    net_worth = "$#{@model.get('net_worth').toFixed(2)}"
+    diff = @model.get('net_worth_diff').toFixed(2)
       
     # Update page title.
     @update_page_title diff, net_worth
@@ -33,10 +34,8 @@ class BTCD.MasterView
   glyph_diff: (diff) -> @visualize_diff(diff)[0]
   entity_diff: (diff) -> @visualize_diff(diff)[1]
 
-  mark_diff: ->
-    diff = BTCD.dashboard.net_worth_diff.toFixed(2)
-
-    if diff > 0
+  mark_diff: (model, net_worth_diff) ->
+    if net_worth_diff > 0
       $('body').removeClass('down').addClass('up')
     else
       $('body').removeClass('up').addClass('down')

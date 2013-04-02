@@ -1,30 +1,7 @@
 BTCD.ExchangeFeed = Backbone.Model.extend 
-  max_history: 750
-
-  update_value: (kind, value) ->
-    this["#{kind}_values"] ||= [] 
-    values = this["#{kind}_values"] # Values array shortcut.
-
-    # Purge values.
-    values.shift() if values.length > @max_history
-    # Last value.
-    values.push value
-
-    # Figure out the trend.
-    if @has kind
-      if @get(kind) > value
-        @set "#{kind}_trend", -1
-      else if @get(kind) < value
-        @set "#{kind}_trend", 1
-    else
-      @set "#{kind}_trend", 0
-
-    # Finally set value.
-    @set kind, value
-
   update: (buy_value, sell_value) ->
-    @update_value 'buy', buy_value if buy_value
-    @update_value 'sell', sell_value if sell_value
+    @set 'buy', buy_value if buy_value
+    @set 'sell', sell_value if sell_value
 
     BTCD.app.events.t 'heartbeat'
 
