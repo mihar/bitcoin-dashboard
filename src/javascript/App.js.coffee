@@ -19,6 +19,9 @@ class BTCD.App
       @events.t 'init:end'
     , this
 
+    # Setup persistence.
+    BTCD.persistence = new BTCD.Persistence
+
     # Setup dashboard object.
     BTCD.dashboard = new BTCD.Dashboard
 
