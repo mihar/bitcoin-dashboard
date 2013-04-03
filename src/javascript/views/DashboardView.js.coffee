@@ -29,13 +29,14 @@ class BTCD.DashboardView
     @diff_el.find('.direction').html @entity_diff(diff)
 
   visualize_diff: (diff) ->
-    return ["▲", "&uarr;"] if diff > 0
-    ["▼", "&darr;"]
+    return ["▼", "&darr;"] if diff < 0
+    ["▲", "&uarr;"]
+    
   glyph_diff: (diff) -> @visualize_diff(diff)[0]
   entity_diff: (diff) -> @visualize_diff(diff)[1]
 
-  mark_diff: (model, net_worth_diff) ->
-    if net_worth_diff > 0
-      $('body').removeClass('down').addClass('up')
-    else
+  mark_diff: ->
+    if @model.get('net_worth_diff_rolling_value') < 0
       $('body').removeClass('up').addClass('down')
+    else
+      $('body').removeClass('down').addClass('up')
