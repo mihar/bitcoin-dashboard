@@ -18,13 +18,25 @@ BTCD.Dashboard = BTCD.AbstractExchange.extend
     # Setup events.
     exchange.on 'change:balance', @sum_balance, this
     exchange.on 'change:net_worth', @sum_net_worth, this
+    exchange.on 'change:net_worth_diff_rolling_values', @sum_net_worth_rolling, this
 
     # Initialize data.
     @sum_balance()
     @sum_net_worth()
+    @sum_net_worth_rolling()
 
     BTCD.app.events.t 'exchange:register', exchange
     BTCD.info "Registering exchange #{exchange.name}", exchange
+
+  sum_net_worth_rolling: ->
+    unless @net_worth_diff
+      sum = 0
+    else
+      sum = _.reduce @net_worth_diff.rolling_values, (sum, n) -> 
+        sum + n
+      , 0
+
+    @set 'net_worth_diff_rolling_value', sum
 
   sum_balance: -> @sum 'balance'
   sum_net_worth: -> @sum 'net_worth'

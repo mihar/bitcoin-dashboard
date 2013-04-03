@@ -3,8 +3,8 @@ class BTCD.DashboardView
     @model = BTCD.dashboard
     @model.on 'change:balance', @update_balance, this
     @model.on 'change:net_worth', @update_net_worth, this
-    @model.on 'change:net_worth_diff', @update_net_worth, this
-    @model.on 'change:net_worth_diff', @mark_diff, this
+    @model.on 'change:net_worth_diff_rolling_value', @update_net_worth, this
+    @model.on 'change:net_worth_diff_rolling_value', @mark_diff, this
 
     BTCD.app.events.on 'exchange:register', @update_balance, this
 
@@ -18,7 +18,7 @@ class BTCD.DashboardView
   update_balance: -> @balance_el.find('strong').text @model.get('balance')
   update_net_worth: -> 
     net_worth = "$#{@model.get('net_worth').toFixed(2)}"
-    diff = @model.get('net_worth_diff').toFixed(2)
+    diff = @model.get('net_worth_diff_rolling_value').toFixed(2)
       
     # Update page title.
     @update_page_title diff, net_worth

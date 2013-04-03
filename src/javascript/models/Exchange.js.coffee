@@ -14,9 +14,42 @@ BTCD.AbstractExchange = Backbone.Model.extend
     if @previous('net_worth') and @get('net_worth') and @previous('net_worth') > 0 and @get('net_worth') > 0
       @update 'net_worth_diff', @get('net_worth') - @previous('net_worth')
 
+  time: -> Math.round(new Date().getTime() / 1000) # Current UNIX timestamp
+
+  track_rolling: (what, value, period = 60) ->
+    this[what].rolling_values ||= []
+    this[what].rolling_times ||= []
+
+    # Start sweeper.
+    @sweep_rolling(what, period) unless this[what].sweeping
+
+    # Push value and time.
+    this[what].rolling_values.push value
+    this[what].rolling_times.push @time()
+
+  sweep_rolling: (what, period) ->
+    this[what].sweeping = true
+    times = this[what].rolling_times
+
+    # Clean-up older than period.
+    while true
+      if times.length > 0 and times[0] < (@time() - period)
+        this[what].rolling_values.shift()
+        times.shift()
+      else
+        break
+
+    @trigger "change:#{what}_rolling_values", this, this[what].rolling_values
+
+    that = this
+    setTimeout ->
+      that.sweep_rolling what, period
+    , (period / 12) * 1000
+
   track: (what, value) ->
-    this["#{what}_values"] ||= [] 
-    values = this["#{what}_values"] # Values array shortcut.
+    this[what] ||= {}
+    this[what].values ||= []
+    values = this[what].values # Values array shortcut.
 
     # Purge values.
     values.shift() if values.length > @max_history
@@ -30,6 +63,9 @@ BTCD.AbstractExchange = Backbone.Model.extend
 
     # Track history.
     @track what, value
+
+    # Track rolling history.
+    @track_rolling what, value, 60 if what is 'net_worth_diff'
     
     # Finally set value.
     @set what, value
